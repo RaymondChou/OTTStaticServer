@@ -27,6 +27,7 @@ POST方式提交文件，注意Enctype必须是multipart/form-data，文件存�
 - 102 文件写入失败
 - 103 文件存入FastDFS失败
 - 104 access_token验证失败
+- 105 请求方式不正确
 
 ### 存储
 
