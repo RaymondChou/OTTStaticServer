@@ -22,11 +22,11 @@ POST方式提交文件，注意Enctype必须是multipart/form-data，文件存�
 
 ### 错误码
 
-100 上传文件不存在或超过大小限制
-101 文件创建失败
-102 文件写入失败
-103 文件存入FastDFS失败
-104 access_token验证失败
+- 100 上传文件不存在或超过大小限制
+- 101 文件创建失败
+- 102 文件写入失败
+- 103 文件存入FastDFS失败
+- 104 access_token验证失败
 
 ### 存储
 
@@ -48,7 +48,10 @@ POST方式提交文件，注意Enctype必须是multipart/form-data，文件存�
 ### 编译安装
 
 (fastdfs是基于4.0.6版本)：
-1. 编译成动态链接库：`gcc -Wall -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -g -O -DDEBUG_FLAG -DOS_LINUX -DIOEVENT_USE_EPOLL  -fPIC -shared  -o libfdfs.so fdfs.c -L/usr/local/lib -lfastcommon -lfdfsclient  -lpthread -ldl -rdynamic -I/usr/local/include/fastcommon -I/usr/local/include/fastdfs
+
+1. 编译成动态链接库：
+
+`gcc -Wall -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -g -O -DDEBUG_FLAG -DOS_LINUX -DIOEVENT_USE_EPOLL  -fPIC -shared  -o libfdfs.so fdfs.c -L/usr/local/lib -lfastcommon -lfdfsclient  -lpthread -ldl -rdynamic -I/usr/local/include/fastcommon -I/usr/local/include/fastdfs
 `
 
 2. 把生成的文件复制到libfdfs.so　复制到/usr/local/lib ，注意文件的权限
