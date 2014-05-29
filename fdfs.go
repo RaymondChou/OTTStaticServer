@@ -8,15 +8,14 @@ package main
 import "C"
 import "fmt"
 import "path/filepath"
-import "strings"
 import "errors"
 
 //上传文件到fdfs
 //conf:配置文件的文件,example:/etc/fdfs/client.conf
 //imagePath:需要上传文件的完整路径,example:"/root/Desktop/logo.jpg"
-func FdfsUploadFile(conf string, imagePath string) (result map[string]interface{}, err error) {
+func FdfsUploadFile(conf string, imagePath string) (result map[string]string, err error) {
 
-	result = make(map[string]interface{})
+	result = make(map[string]string)
 	var resData C.responseData = C.upload_file(C.CString(conf), C.CString(imagePath))
 
 	// fmt.Println("upload file msg:", C.GoString(resData.msg)) ////当成功的时候，是返回图片的id,example:group1/M00/00/00/wKgBP1NxvSqH9qNuAAAED6CzHYE179.jpg ,当失败的时候是返回错误消息
