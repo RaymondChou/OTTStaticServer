@@ -6,7 +6,7 @@ POST方式提交文件，注意Enctype必须是multipart/form-data，文件存�
 
 上传地址： http://domain.com:9090/upload
 
-验证： 统一采用access_token验证方式，表单key为access_token
+验证： 采用Header中access_token字段放入access_token的验证方式
 
 ### 返回
 

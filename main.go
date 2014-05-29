@@ -26,7 +26,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		r.ParseMultipartForm(50 << 20)
 
-		access_token := r.FormValue("access_token")
+		access_token := r.Header.Get(key)("access_token")
 		if access_token == "" || access_token != "9iui23o48gnklnvyeqiu313pob042" {
 			response(w, RespT{Ret: 104})
 			return
