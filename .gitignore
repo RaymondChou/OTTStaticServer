@@ -1,0 +1,17 @@
+/bin
+
+/tmp
+
+/db
+
+.idea
+.DS_Store
+Thumbs.db
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+nbproject
+
+nohup.out
