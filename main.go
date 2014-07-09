@@ -4,15 +4,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"runtime"
 	"time"
 )
 
+const (
+	OTTServerVerifyTokenAPI = "http://112.4.28.89:8080/ott/verify_token"
+)
+
 type RespT struct {
 	Ret int    `json:"ret"`
 	Url string `json:"url"`
+}
+
+type ResultT struct {
+	Ret int `json:"ret"`
 }
 
 //This is where the action happens.
@@ -27,7 +37,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		r.ParseMultipartForm(50 << 20)
 
 		access_token := r.Header.Get("access_token")
-		if access_token == "" || access_token != "9iui23o48gnklnvyeqiu313pob042" {
+		if access_token == "" || !checkToken(access_token) {
 			response(w, RespT{Ret: 104})
 			return
 		}
@@ -76,6 +86,39 @@ func response(w http.ResponseWriter, responseData interface{}) {
 	w.Write(b)
 }
 
+func checkToken(access_token string) bool {
+	v := make(url.Values)
+	v.Set("access_token", access_token)
+
+	if res, err := http.PostForm(OTTServerVerifyTokenAPI, v); err == nil {
+		result, err := ioutil.ReadAll(res.Body)
+		res.Body.Close()
+		if err != nil {
+			fmt.Printf("%v", err)
+			return false
+		}
+
+		var resultT ResultT
+
+		err = json.Unmarshal(result, &resultT)
+		if err != nil {
+			fmt.Printf("%v", err)
+			return false
+		}
+
+		if resultT.Ret != 0 {
+			return false
+		} else {
+			return true
+		}
+
+	} else {
+		fmt.Printf("%v", err)
+		return false
+	}
+
+}
+
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
@@ -91,3 +134,7 @@ func main() {
 	// fmt.Println("file upload result:", str)
 	// fmt.Println("file upload err:", err)
 }
+
+// func FdfsUploadFile(a string, b string) (c map[string]string, d error) {
+// 	return
+// }
