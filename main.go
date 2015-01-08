@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"runtime"
+	"runtime/debug"
 	"time"
 )
 
@@ -23,6 +24,20 @@ type RespT struct {
 
 type ResultT struct {
 	Ret int `json:"ret"`
+}
+
+func safeHandler(fn http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		defer func() {
+			if e, ok := recover().(error); ok {
+				http.Error(w, e.Error(), http.StatusInternalServerError)
+				// logging
+				fmt.Println("WARN: panic fired in %v.panic - %v", fn, e)
+				fmt.Println(string(debug.Stack()))
+			}
+		}()
+		fn(w, r)
+	}
 }
 
 //This is where the action happens.
@@ -122,7 +137,7 @@ func checkToken(access_token string) bool {
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	http.HandleFunc("/upload", uploadHandler)
+	http.HandleFunc("/upload", safeHandler(uploadHandler))
 
 	//Listen on port 9090
 	http.ListenAndServe(":9090", nil)
