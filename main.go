@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	OTTServerVerifyTokenAPI = "http://112.4.28.89:8080/ott/verify_token"
+	OTTServerVerifyTokenAPI = "http://172.18.14.20:8080/ott/verify_token"
 )
 
 type RespT struct {
@@ -86,7 +86,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 			response(w, RespT{Ret: 103})
 		} else {
 			os.Remove(filePath)
-			url := "http://127.0.0.1:8080/" + result["path"]
+			url := "http://112.4.28.92:8081/" + result["path"]
 			response(w, RespT{Ret: 0, Url: url})
 		}
 
@@ -140,7 +140,7 @@ func main() {
 	http.HandleFunc("/upload", safeHandler(uploadHandler))
 
 	//Listen on port 9090
-	http.ListenAndServe(":9090", nil)
+	http.ListenAndServe(":8899", nil)
 	//上传文件
 	//str,err:=FdfsUploadFile("/etc/fdfs/client.conf","README.md")
 
